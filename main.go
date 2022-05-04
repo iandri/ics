@@ -18,8 +18,6 @@ import (
 func main() {
 	ctx := context.Background()
 
-	// conf := pflag.StringP("conf", "c", "ics.conf", "config file path")
-
 	serverFlag := pflag.StringP("server", "s", "", "server url")
 	username := pflag.StringP("username", "u", "", "username")
 	password := pflag.StringP("password", "p", "", "password")
