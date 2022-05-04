@@ -1,0 +1,43 @@
+# This is an example .goreleaser.yml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod tidy
+    # you may remove this if you don't need go generate
+    - go mod vendor
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+archives:
+  - replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      amd64: x86_64
+checksum:
+  name_template: "checksums.txt"
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+brews:
+  - tap:
+      owner: iandri
+      name: homebrew-taps
+    commit_author:
+      name: ian
+      email: ionutz.andriescu@gmail.com
+    description: Convert jira ticket to ics file
+    homepage: https://github.com/iandri/ics
+    license: "BSD-3-Clause"
+    skip_upload: auto
+    
