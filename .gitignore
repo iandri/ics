@@ -4,3 +4,4 @@ dist/
 vendor/
 *.ics
 *.xml
+ics.conf

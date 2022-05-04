@@ -3,13 +3,10 @@ module ics
 go 1.18
 
 require (
+	github.com/BurntSushi/toml v1.1.0
 	github.com/jordic/goics v0.0.0-20210404174824-5a0337b716a0
-	jaytaylor.com/html2text v0.0.0-20211105163654-bc68cce691ba
+	github.com/palantir/stacktrace v0.0.0-20161112013806-78658fd2d177
+	github.com/spf13/pflag v1.0.5
 )
 
-require (
-	github.com/mattn/go-runewidth v0.0.9 // indirect
-	github.com/olekukonko/tablewriter v0.0.5 // indirect
-	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
-	golang.org/x/net v0.0.0-20190311183353-d8887717615a // indirect
-)
+require github.com/stretchr/testify v1.7.1 // indirect
