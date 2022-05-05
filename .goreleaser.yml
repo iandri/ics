@@ -39,3 +39,4 @@ brews:
     description: Convert jira ticket to ics file
     homepage: https://github.com/iandri/ics
     license: "BSD-3-Clause"
+    skip_upload: auto
