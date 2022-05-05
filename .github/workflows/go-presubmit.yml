@@ -20,5 +20,3 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
       - uses: actions/checkout@v2
-        with:
-          staticcheck-version: "2020.1.6"
