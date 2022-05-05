@@ -18,10 +18,10 @@ import (
 func main() {
 	ctx := context.Background()
 
-	serverFlag := pflag.StringP("server", "s", "", "server url")
-	username := pflag.StringP("username", "u", "", "username")
-	password := pflag.StringP("password", "p", "", "password")
-	ticket := pflag.StringP("ticket", "t", "", "ticker number")
+	serverFlag := pflag.StringP("server", "s", "", "server url, or export env JIRA_SERVER")
+	username := pflag.StringP("username", "u", "", "username, or export env JIRA_USERNAME")
+	password := pflag.StringP("password", "p", "", "password, or export env JIRA_PASSWORD")
+	ticket := pflag.StringP("ticket", "t", "", "ticker number, (ex. OP-7378)")
 	pflag.CommandLine.SortFlags = false
 	pflag.Parse()
 
