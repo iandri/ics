@@ -29,3 +29,9 @@ changelog:
     exclude:
       - "^docs:"
       - "^test:"
+brews:
+  - name: ics
+    homepage: https://github.com/iandri/homebrew-taps
+    tap:
+      owner: iandri
+      name: homebrew-taps
