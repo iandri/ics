@@ -37,5 +37,5 @@ brews:
       name: ian
       email: ionutz.andriescu@gmail.com
     description: Convert jira ticket to ics file
-    homepage: https://github.com/iandri/homebrew-taps
+    homepage: https://github.com/iandri/ics
     license: "BSD-3-Clause"
