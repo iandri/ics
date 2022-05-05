@@ -30,6 +30,9 @@ changelog:
       - "^docs:"
       - "^test:"
 brews:
+  - github:
+      owner: iandri
+      name: ics
   - name: ics
     description: Convert jira ticket to ics file
     homepage: https://github.com/iandri/homebrew-taps
