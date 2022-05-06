@@ -8,12 +8,17 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/spf13/pflag"
 
 	"github.com/jordic/goics"
 )
+
+func init() {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+}
 
 func main() {
 	ctx := context.Background()
@@ -44,20 +49,55 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var rss Rss
+	var rss *Rss
 
 	if err := xml.Unmarshal(body, &rss); err != nil {
 		log.Fatal(err)
 	}
 
-	t, err := time.Parse(time.RFC1123Z, rss.Channel.Item.Created)
-	if err != nil {
-		log.Fatal(err)
+	var eventStart time.Time
+	var eventEnd time.Time
+	resolution := rss.Channel.Item.Resolution.Text
+	customTimeFormat := "Mon, _2 Jan 2006 15:04:05 -0700"
+	description := rss.Channel.Item.Description
+
+	if t, found := rss.getCustomFieldValue("customfield_16771"); found {
+		fmt.Println(t)
+		if ts, err := time.Parse(customTimeFormat, t); err == nil {
+			eventStart = ts
+		} else {
+			log.Fatal(err)
+		}
+	} else {
+		if ts, err := time.Parse(time.RFC1123Z, rss.Channel.Item.Created); err != nil {
+			eventStart = ts
+		} else {
+			log.Fatal(err)
+		}
+	}
+
+	if t, found := rss.getCustomFieldValue("customfield_16775"); found {
+		minutes, err := strconv.ParseFloat(t, 32)
+		if err != nil {
+			log.Fatal(err)
+		}
+		eventEnd = eventStart.Add(time.Duration(minutes) * time.Minute)
+	} else {
+		if resolution == "Unresolved" {
+			eventEnd = time.Now().AddDate(1, 0, 0)
+		} else {
+			eventEnd = eventStart
+		}
+	}
+
+	if v, found := rss.getCustomFieldValue("customfield_16782"); found {
+		description = rss.Channel.Item.Description + " \n" + v
 	}
 
 	col := collection{
-		Created:     t,
-		Description: rss.Channel.Item.Description,
+		DTStart:     eventStart,
+		DTEnd:       eventEnd,
+		Description: description,
 		Summary:     rss.Channel.Item.Summary,
 		Reporter:    rss.Channel.Item.Reporter.Text,
 		Location:    rss.Channel.Item.Key.Text,
@@ -78,6 +118,16 @@ func main() {
 	}
 
 	fmt.Println(file, "created")
+}
+
+func (rss *Rss) getCustomFieldValue(id string) (string, bool) {
+	customFields := rss.Channel.Item.Customfields
+	for _, customField := range customFields.Customfield {
+		if customField.ID == id {
+			return customField.Customfieldvalues.Customfieldvalue[0].Text, true
+		}
+	}
+	return "", false
 }
 
 func visitFlagSetMap(f *pflag.Flag) {

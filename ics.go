@@ -8,7 +8,8 @@ import (
 
 type collection struct {
 	Reporter    string
-	Created     time.Time
+	DTStart     time.Time
+	DTEnd       time.Time
 	Nits        int
 	Extra       string
 	Location    string
@@ -31,16 +32,9 @@ func (ev collection) EmitICal() goics.Componenter {
 
 	s := goics.NewComponent()
 	s.SetType("VEVENT")
-	var dtend time.Time
-	if ev.Resolution == "Unresolved" {
-		now := time.Now()
-		dtend = now.AddDate(1, 0, 0)
-	} else {
-		dtend = ev.Created.AddDate(0, 0, ev.Nits)
-	}
-	k, v := goics.FormatDateField("DTEND", dtend)
+	k, v := goics.FormatDateTimeField("DTEND", ev.DTEnd)
 	s.AddProperty(k, v)
-	k, v = goics.FormatDateField("DTSTART", ev.Created)
+	k, v = goics.FormatDateTimeField("DTSTART", ev.DTStart)
 	s.AddProperty(k, v)
 	s.AddProperty("UID", ev.Reporter)
 	s.AddProperty("DESCRIPTION", ev.Description)

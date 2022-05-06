@@ -68,12 +68,31 @@ type Rss struct {
 				Text     string `xml:",chardata"`
 				Username string `xml:"username,attr"`
 			} `xml:"reporter"`
-			Labels       string `xml:"labels"`
-			Created      string `xml:"created"`
-			Updated      string `xml:"updated"`
-			Due          string `xml:"due"`
-			Votes        string `xml:"votes"`
-			Watches      string `xml:"watches"`
+			Labels     string `xml:"labels"`
+			Created    string `xml:"created"`
+			Updated    string `xml:"updated"`
+			Due        string `xml:"due"`
+			Votes      string `xml:"votes"`
+			Watches    string `xml:"watches"`
+			Issuelinks struct {
+				Text          string `xml:",chardata"`
+				Issuelinktype struct {
+					Text        string `xml:",chardata"`
+					ID          string `xml:"id,attr"`
+					Name        string `xml:"name"`
+					Inwardlinks struct {
+						Text        string `xml:",chardata"`
+						Description string `xml:"description,attr"`
+						Issuelink   struct {
+							Text     string `xml:",chardata"`
+							Issuekey struct {
+								Text string `xml:",chardata"`
+								ID   string `xml:"id,attr"`
+							} `xml:"issuekey"`
+						} `xml:"issuelink"`
+					} `xml:"inwardlinks"`
+				} `xml:"issuelinktype"`
+			} `xml:"issuelinks"`
 			Attachments  string `xml:"attachments"`
 			Subtasks     string `xml:"subtasks"`
 			Customfields struct {
@@ -85,7 +104,7 @@ type Rss struct {
 					Customfieldname   string `xml:"customfieldname"`
 					Customfieldvalues struct {
 						Text             string `xml:",chardata"`
-						Customfieldvalue struct {
+						Customfieldvalue []struct {
 							Text string `xml:",chardata"`
 							Key  string `xml:"key,attr"`
 						} `xml:"customfieldvalue"`
